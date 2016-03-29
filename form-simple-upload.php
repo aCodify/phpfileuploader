@@ -21,7 +21,7 @@
 			$uploader->AllowedFileExtensions="jpeg,jpg,gif,png,zip";
 			
 			//Where'd the files go?
-			//$uploader->SaveDirectory="/myfolder";
+			$uploader->SaveDirectory="myfolder/";
 			
 			$uploader->Render();
 		?>

@@ -15,7 +15,7 @@ if(!$scriptfile)$scriptfile=$_SERVER['ORIG_SCRIPT_FILENAME'];
 if($type=="emptyhtml")
 {
 	header("Last-Modified: " . gmdate('D, d M Y H:i:s', time()) . 'GMT');
-	header("Expires: " . gmdate('D, d M Y H:i:s', time() + 2592000) . 'GMT');
+	header("Expires: " . gmdate('D, d M Y H:i:s', time() + 31104000) . 'GMT');
 	header("Content-Type: text/html");
 	echo("<html><head><title>EMPTY</title></head><body></body></html>");
 	exit(200);
@@ -36,7 +36,7 @@ else if($type=="script")
 		{
 			if(e.nodeName=="FORM")
 			{
-				e.submit();
+				
 				return;
 			}
 		}
@@ -51,12 +51,13 @@ else if($type=="license")
 	header("Content-Type: application/oct-stream"); 
 	$licensefile=dirname($scriptfile)."/license/phpuploader.lic";
 	$size=filesize($licensefile);
-	$mqr=get_magic_quotes_runtime();
-
+	// $mqr=get_magic_quotes_runtime();
+	$mqr = true;
+	// set_magic_quotes_runtime(0);
 	$handle=fopen($licensefile,"rb");
 	$data=fread($handle,$size);
 	fclose($handle);
-
+	// set_magic_quotes_runtime($mqr);
 	echo(bin2hex($data));
 }
 else if($type=="serverip")

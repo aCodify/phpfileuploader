@@ -1,8 +1,8 @@
 <?php
 
-$PhpUploader_FSEncoding="ISO-8859-1//TRANSLIT";
+$PhpUploader_FSEncoding="UTF-8//TRANSLIT";
 
-$PhpUploader_InternalEncoding="utf-8";
+$PhpUploader_InternalEncoding="UTF-8";
 
 error_reporting(E_ALL ^ E_NOTICE);
 
@@ -179,8 +179,8 @@ function PhpUploader_Copy($_file,$_line,$src,$dst)
 	error_reporting($er);
 	if($re===false)
 	{
-		$le=error_get_last();
-		throw(new Exception($le["message"] . " , failed to copy $src to $dst' , at $_file line $_line"));
+		// $le=error_get_last();
+		// throw(new Exception($le["message"] . " , failed to copy $src to $dst' , at $_file line $_line"));
 	}
 	return $re;
 }
@@ -519,9 +519,12 @@ class PhpUploader
 		
 		$cd=dirname($this->GetWebPath(__FILE__));
 		
-		$this->ResourceDirectory="$cd/resources";
-		$this->ResourceHandler="$cd/ajaxuploaderresource.php";
-		$this->UploadUrl="$cd/ajaxuploaderhandler.php";
+		$this->ResourceDirectory= "../../$cd/resources";
+		$this->ResourceHandler= "../../$cd/ajaxuploaderresource.php";
+
+		// $this->UploadUrl= "../../$cd/demo2_upload.php";
+
+		$this->UploadUrl= "../../$cd/ajaxuploaderhandler.php";
 		
 		
 		//$this->TempDirectory=dirname(dirname(__FILE__)) . "/uploadertemp";
@@ -557,9 +560,9 @@ class PhpUploader
 		$ppath=$scriptfile;
 		$vpath=$_SERVER['SCRIPT_NAME'];
 		
-		$ppath=str_replace("//","/",str_replace("\\","/",$ppath));
-		$vpath=str_replace("//","/",str_replace("\\","/",$vpath));
-		$pfile=str_replace("//","/",str_replace("\\","/",$pfile));
+		$ppath=str_replace("\\","/",$ppath);
+		$vpath=str_replace("\\","/",$vpath);
+		$pfile=str_replace("\\","/",$pfile);
 		
 		$lfile=strtolower($pfile);
 		$lpath=strtolower($ppath);
@@ -844,7 +847,6 @@ class PhpUploader
 		
 		$scriptfile=@$_SERVER['SCRIPT_FILENAME'];
 		if(!$scriptfile)$scriptfile=$_SERVER['ORIG_SCRIPT_FILENAME'];
-		
 		$this->_SourceFileName = $scriptfile;
 		$this->_SaveSecuritySetting("_SourceFileName");
 		$this->_SaveSecuritySetting("MaxSizeKB");
@@ -855,7 +857,9 @@ class PhpUploader
 	function LoadSecuritySettings()
 	{
 		if(!@$_SESSION)session_start();
-		
+		$scriptfile=@$_SERVER['SCRIPT_FILENAME'];
+		if(!$scriptfile)$scriptfile=$_SERVER['ORIG_SCRIPT_FILENAME'];
+		$this->_SourceFileName = $scriptfile;	
 		$this->_LaveSecuritySetting("_SourceFileName");
 		$this->_LaveSecuritySetting("MaxSizeKB");
 		$this->_LaveSecuritySetting("AllowedFileExtensions");
@@ -885,19 +889,21 @@ class PhpUploader
 	}
 	function PreProcessRequest()
 	{
+
 		$this->_PreProcessRequestInternal();
 		if( ! $this->IsValidationRequest() )
 			exit(200);
 	}
 	function _PreProcessRequestInternal()
 	{
+
 		if($this->_preprocessed)
 			return false;
 		$this->_preprocessed=true;
 		
 		if( ! $this->_IsUploadRequest() )
 			return false;
-	
+		
 		if(@$_GET['_GetAddonInfo']=="size")
 		{
 			//TODO:handle silverlight resume feature.
@@ -911,6 +917,7 @@ class PhpUploader
 		
 		if(@$_GET['_Addon']=="xhttp")
 		{
+
 			$this->_isaddonupload=true;
 			try
 			{
@@ -928,6 +935,7 @@ class PhpUploader
 		}
 		else if(@$_GET['_Addon']=="upload")
 		{
+
 			$this->_isaddonupload=true;
 				
 			try
@@ -947,6 +955,7 @@ class PhpUploader
 		}
 		else
 		{
+
 			$this->_isverify=true;
 			try
 			{
