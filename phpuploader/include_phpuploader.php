@@ -518,7 +518,6 @@ class PhpUploader
 		$this->Name="AjaxUploaderFiles";
 		
 		$cd=dirname($this->GetWebPath(__FILE__));
-		print_r($cd);
 
 		$this->ResourceDirectory= "$cd/resources";
 		$this->ResourceHandler= "$cd/ajaxuploaderresource.php";

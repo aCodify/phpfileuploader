@@ -135,6 +135,7 @@
 				<?php
 
 				$uploader=new PhpUploader();
+                $uploader->SaveDirectory="myfolder/";
 				$uploader->MaxSizeKB=10240;
 				$uploader->Name="myuploader";
 				$uploader->MultipleFilesUpload=true;
